@@ -1,33 +1,34 @@
-const upsnake = document.getElementById("cima");
-const downsnake = document.getElementById("baixo");
-const leftsnake = document.getElementById("esquerda");
-const rigthsnake = document.getElementById("direita");
+const upsnake = document.getElementById("up");
+const downsnake = document.getElementById("down");
+const leftsnake = document.getElementById("left");
+const rigthsnake = document.getElementById("right");
 
-upsnake.addEventListener("click", (event) => {
+upsnake.addEventListener("click", () => {
   moveUp();
 });
 
-downsnake.addEventListener("click", (event) => {
+downsnake.addEventListener("click", () => {
   moveDown();
 });
 
-leftsnake.addEventListener("click", (event) => {
+leftsnake.addEventListener("click", () => {
   moveLeft();
 });
 
-rigthsnake.addEventListener("click", (event) => {
+rigthsnake.addEventListener("click", () => {
   moveRight();
 });
 
-window.onload = function teste() {
-  stage = document.getElementById('stage');
+window.onload = function startGame() {
+  render_record.textContent = localStorage.getItem("record-score");
+
+  stage = document.getElementById("stage");
   ctx = stage.getContext("2d");
   document.addEventListener("keydown", keyPush);
-  //setInterval(game, 140);
 
-  vel = .1;
-  score = [];
-  core = 0;
+  vel = 0.1;
+  sscore = [];
+  score = 0;
 
   vx = vy = 0;
   px = 10;
@@ -36,13 +37,11 @@ window.onload = function teste() {
   qp = 17;
   ax = ay = 15;
 
-  caminho = [];
-  rastro = 2;
-
+  path = [];
+  track = 2;
 
   function game() {
-
-    pontos.textContent = core;
+    render_score.textContent = score;
 
     px += vx;
     px = parseFloat(px.toFixed(1));
@@ -50,7 +49,6 @@ window.onload = function teste() {
     py = parseFloat(py.toFixed(1));
 
     if (px % 1 == 0 && py % 1 == 0) {
-
       if (px < 0) {
         px = qp - 1;
       }
@@ -72,34 +70,29 @@ window.onload = function teste() {
 
       ctx.fillStyle = "#04af00";
 
-      if((vx || vy) && caminho.find(e => e.x == px &&  e.y == py)) {
-          vx = vy = 0;
-          rastro = 2;
-          core = 0;
-          console.log('Pontos resetados');
-          requestAnimationFrame(game);
-          return;
+      if ((vx || vy) && path.find((e) => e.x == px && e.y == py)) {
+        vx = vy = 0;
+        track = 2;
+        score = 0;
+
+        requestAnimationFrame(game);
+        return;
       }
 
-      caminho.push({ x: px, y: py });
-      while (caminho.length > rastro) {
-        caminho.shift();
+      path.push({ x: px, y: py });
+      while (path.length > track) {
+        path.shift();
       }
 
-      for (var i = 0; i < caminho.length; i++) {
-        ctx.fillRect(caminho[i].x * tp, caminho[i].y * tp, tp, tp);
-        // if (caminho[i].x == px && caminho[i].y == py) {
-        //   vx = vy = 0;
-        //   rastro = 2;
-        //   core = 0;
-        //   console.log('Pontos resetados');
-        // }
+      for (var i = 0; i < path.length; i++) {
+        ctx.fillRect(path[i].x * tp, path[i].y * tp, tp, tp);
+        render_record.textContent = localStorage.getItem("record-score");
       }
 
       if (ax == px && ay == py) {
-        rastro++;
-        core++;
-        console.log('Você fez ' + core + ' pontos !');
+        track++;
+        score++;
+        onSavePersonalRecord();
         ax = Math.floor(Math.random() * qp);
         ay = Math.floor(Math.random() * qp);
       }
@@ -108,32 +101,38 @@ window.onload = function teste() {
   }
 
   function keyPush(event) {
-
     switch (event.keyCode) {
-      case 37: //Esquerda 
-        moveLeft()
+      case 37: //left
+        moveLeft();
         break;
 
-      case 38: //Cima
-        moveUp()
+      case 38: //up
+        moveUp();
         break;
 
-      case 39: //Direita
-        moveRight()
+      case 39: //right
+        moveRight();
         break;
 
-      case 40: //Baixo
-        moveDown()
+      case 40: //down
+        moveDown();
         break;
 
       default:
-
         break;
     }
   }
 
   game();
-}
+};
+
+const onSavePersonalRecord = () => {
+  const currentRecord = localStorage.getItem("record-score");
+
+  if (score > currentRecord) {
+    window.localStorage.setItem("record-score", score);
+  }
+};
 
 function moveRight() {
   vx = vel;
@@ -143,7 +142,7 @@ function moveRight() {
 
 function moveLeft() {
   vx = -vel;
-  py = vy > 0 ? Math.floor(py) : Math.ceil(py); //Math.floor(py);
+  py = vy > 0 ? Math.floor(py) : Math.ceil(py);
   vy = 0;
 }
 

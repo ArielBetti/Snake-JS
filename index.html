@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- shortcut icon -->
+    <link rel="shortcut icon" href="./img/snake.svg" />
+    <!-- Local CSS -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+
+    <title>Snake-JS</title>
+  </head>
+  <body>
+    <main class="game-container">
+      <section class="game-screen">
+        <h2>Snake-JS</h2>
+        <canvas id="stage" width="300" height="300"></canvas>
+        <p>Pontos: <span id="render_score"></span></p>
+        <p>Record: <span id="render_record"></span></p>
+        <p class="dev">Desenvolvido por: Ariel Betti</p>
+        <section class="gamepad">
+          <div>
+            <button id="up" class="btn-game" onclick="up()">↑</button>
+          </div>
+          <div class="lr">
+            <button id="left" class="btn-game cl" onclick="left()">←</button>
+            <button id="right" class="btn-game cr" onclick="right()">→</button>
+          </div>
+          <div class="down">
+            <button id="down" class="btn-game" onclick="down()">↓</button>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script type="text/javascript" src="./js/snake.js"></script>
+  </body>
+</html>

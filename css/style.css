@@ -5,13 +5,13 @@
 		background: #0a0a0a;
 	}
 
-	.container-jogo {
+	.game-container {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 
-	.tela-jogo {
+	.game-screen {
 		margin-top: 10px;
 		border: solid 3px #04af00;
 		max-width: 360px;
@@ -26,12 +26,12 @@
 	}
 
 
-	.tela-jogo h2{
+	.game-screen h2{
 		text-align: center;
 		font-size: 1.55em;
 	}
 
-	.controle {
+	.gamepad {
 		border: solid 3px #04af00;
 		display: flex;
 		flex-wrap: nowrap;
